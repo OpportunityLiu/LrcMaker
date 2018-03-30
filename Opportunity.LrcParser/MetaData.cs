@@ -2,10 +2,9 @@
 
 namespace Opportunity.LrcParser
 {
+    [System.Diagnostics.DebuggerDisplay(@"{ToString(),nq}")]
     public class MetaData
     {
-        private static char[] invalidContentChars = "]".ToCharArray();
-
         public MetaData(MetaDataType title)
             : this(title, null) { }
 
@@ -26,6 +25,7 @@ namespace Opportunity.LrcParser
 
         public MetaDataType Title { get; }
 
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         private string content;
         public string Content
         {
@@ -33,11 +33,13 @@ namespace Opportunity.LrcParser
             set
             {
                 value = value ?? "";
-                Helper.CheckString(nameof(value), value, invalidContentChars);
                 value = value.Trim();
                 Title.Validate(value);
                 this.content = value;
             }
         }
+
+        /// <inheritdoc/>
+        public override string ToString() => "[" + Title.Tag + ":" + this.content + "]";
     }
 }

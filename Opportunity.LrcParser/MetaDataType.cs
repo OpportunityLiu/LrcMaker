@@ -4,19 +4,35 @@ using System.Collections.ObjectModel;
 
 namespace Opportunity.LrcParser
 {
+    [System.Diagnostics.DebuggerDisplay(@"{Tag}")]
     public abstract class MetaDataType
     {
         private static char[] invalidChars = "]:".ToCharArray();
 
         protected MetaDataType(string tag)
+            : this(tag, false) { }
+
+        internal MetaDataType(string tag, bool isSafe)
+        {
+            if (!isSafe)
+            {
+                tag = checkTag(tag);
+            }
+            this.Tag = tag;
+        }
+
+        private static string checkTag(string tag)
         {
             if (string.IsNullOrWhiteSpace(tag))
                 throw new ArgumentNullException(tag);
             Helper.CheckString(nameof(tag), tag, invalidChars);
-            this.Tag = tag.Trim();
+            tag = tag.Trim();
+            return tag;
         }
 
         public string Tag { get; }
+
+        public override string ToString() => Tag;
 
         protected internal abstract void Validate(string mataDataContent);
 
@@ -25,9 +41,7 @@ namespace Opportunity.LrcParser
 
         public static MetaDataType Create(string tag, Action<string> validator)
         {
-            if (string.IsNullOrWhiteSpace(tag))
-                throw new ArgumentNullException(tag);
-            tag = tag.Trim();
+            tag = checkTag(tag);
             if (PreDefined.TryGetValue(tag, out var r))
                 return r;
             if (validator is null)
@@ -39,7 +53,7 @@ namespace Opportunity.LrcParser
         private sealed class NoValidateMetaDataType : MetaDataType
         {
             public NoValidateMetaDataType(string tag)
-                : base(tag) { }
+                : base(tag, true) { }
 
             protected internal override void Validate(string mataDataContent) { }
         }
@@ -47,7 +61,7 @@ namespace Opportunity.LrcParser
         private sealed class DelegateMetaDataType : MetaDataType
         {
             public DelegateMetaDataType(string tag, Action<string> validator)
-                : base(tag)
+                : base(tag, true)
             {
                 this.validator = validator;
             }
@@ -64,14 +78,14 @@ namespace Opportunity.LrcParser
         public static IReadOnlyDictionary<string, MetaDataType> PreDefined { get; }
             = new ReadOnlyDictionary<string, MetaDataType>(new Dictionary<string, MetaDataType>(StringComparer.OrdinalIgnoreCase)
             {
-                ["Artist"] = Create("ar"),
-                ["Album"] = Create("al"),
-                ["Title"] = Create("ti"),
-                ["Author"] = Create("au"),
-                ["Creator"] = Create("by"),
-                ["Offset"] = Create("offset", v => double.TryParse(v, out _)),
-                ["Editor"] = Create("re"),
-                ["Version"] = Create("ve"),
+                ["Artist"] = new NoValidateMetaDataType("ar"),
+                ["Album"] = new NoValidateMetaDataType("al"),
+                ["Title"] = new NoValidateMetaDataType("ti"),
+                ["Author"] = new NoValidateMetaDataType("au"),
+                ["Creator"] = new NoValidateMetaDataType("by"),
+                ["Offset"] = new DelegateMetaDataType("offset", v => double.TryParse(v, out _)),
+                ["Editor"] = new NoValidateMetaDataType("re"),
+                ["Version"] = new NoValidateMetaDataType("ve"),
             });
 
         /// <summary>

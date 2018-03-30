@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Opportunity.LrcParser
 {
-    class MetaDataCollection
+    public class MetaDataCollection : List<MetaData>
     {
     }
 }
