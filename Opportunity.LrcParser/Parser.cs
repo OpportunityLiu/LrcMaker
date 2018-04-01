@@ -11,8 +11,8 @@ namespace Opportunity.LrcParser
 
         private int currentPosition = 0;
 
-        public readonly List<MetaData> MetaData = new List<MetaData>(4);
-        public readonly List<Line> Lines = new List<Line>(25);
+        public readonly MetaDataDictionary MetaData = new MetaDataDictionary();
+        public readonly LineCollection Lines = new LineCollection();
 
         public Parser(string data)
         {
@@ -72,6 +72,7 @@ namespace Opportunity.LrcParser
 
         private int readTag(int next, out int tagStart, out int tagEnd)
         {
+            skipWhitespaces();
             tagStart = -1;
             tagEnd = -1;
             for (var i = this.currentPosition + 1; i < next; i++)
@@ -149,11 +150,13 @@ namespace Opportunity.LrcParser
                     var colum = this.data.IndexOf(':', tagStart, tagEnd - tagStart);
                     try
                     {
-                        if (colum < 0)
-                            this.MetaData.Add(new MetaData(MetaDataType.Create(this.data.Substring(tagStart, tagEnd - tagStart))));
-                        else
-                            this.MetaData.Add(new MetaData(MetaDataType.Create(this.data.Substring(tagStart, colum - tagStart)),
-                                this.data.Substring(colum + 1, tagEnd - colum - 1)));
+                        var mdt = colum < 0
+                            ? MetaDataType.Create(this.data.Substring(tagStart, tagEnd - tagStart))
+                            : MetaDataType.Create(this.data.Substring(tagStart, colum - tagStart));
+                        var mdc = colum < 0
+                            ? ""
+                            : this.data.Substring(colum + 1, tagEnd - colum - 1);
+                        this.MetaData[mdt] = mdt.Parse(mdc);
                     }
                     catch { }
                 }

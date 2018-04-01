@@ -1,13 +1,39 @@
-﻿<Page
-    x:Class="Opportunity.LrcMaker.MainPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Opportunity.LrcMaker"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+﻿<Page x:Class="Opportunity.LrcMaker.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Opportunity.LrcMaker"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    </Grid>
+  <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <ScrollViewer x:Name="svImg" HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+      <Image x:Name="img"
+             Stretch="Fill"
+             Height="100"
+             Width="11728"/>
+    </ScrollViewer>
+    <MediaPlayerElement x:Name="mpe"
+                        Grid.Row="1"
+                        AreTransportControlsEnabled="True">
+      <MediaPlayerElement.TransportControls>
+        <MediaTransportControls IsFullWindowButtonVisible="False"
+                                IsPlaybackRateEnabled="True"
+                                IsPlaybackRateButtonVisible="True"
+                                IsSkipBackwardButtonVisible="True"
+                                IsSkipBackwardEnabled="True"
+                                IsSkipForwardButtonVisible="True"
+                                IsSkipForwardEnabled="True"
+                                IsZoomButtonVisible="False"
+                                IsFastRewindButtonVisible="True"
+                                IsFastRewindEnabled="True" />
+      </MediaPlayerElement.TransportControls>
+    </MediaPlayerElement>
+  </Grid>
 </Page>

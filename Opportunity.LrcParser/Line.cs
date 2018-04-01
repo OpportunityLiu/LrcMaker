@@ -36,12 +36,23 @@ namespace Opportunity.LrcParser
         internal string InternalContent = "";
         public string Content { get => this.InternalContent; set => this.InternalContent = (value ?? "").Trim(); }
 
+        internal StringBuilder ToString(StringBuilder sb)
+        {
+            var tts = this.InternalTimestamp;
+            var ts = tts >= ONE_HOUR
+                ? tts.ToString("HH:mm:ss.ff")
+                : tts.ToString("mm:ss.ff");
+            return sb.Append('[')
+                .Append(ts)
+                .Append(']')
+                .AppendLine(this.InternalContent);
+        }
+
         public override string ToString()
         {
-            var ts = Timestamp >= ONE_HOUR
-                ? Timestamp.ToString("HH:mm:ss.ff")
-                : Timestamp.ToString("mm:ss.ff");
-            return "[" + ts + "]" + Content;
+            var sb = new StringBuilder(this.InternalContent.Length + 10);
+            ToString(sb);
+            return sb.ToString();
         }
     }
 }

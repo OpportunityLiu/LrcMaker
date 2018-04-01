@@ -18,7 +18,8 @@ fripside
    ]  SAF
 [al:eternal reality]
 [by:ShenzhiV战斗]
-[00:02.16]             
+[offset: +1.1]
+[00:02.16]  [00:02.16]             
   輝く希望が この街を駆け抜けるから
 〖闪耀的希望 在这座城市之中游走奔驰〗
 [00:08.71]いつだって 信じ合える仲間と 手を繋ぎながら
@@ -77,16 +78,16 @@ fripside
 [03:50.00]終わり
 [03:52.00]
 ");
-            Assert.AreEqual(52, l.Lines.Count);
+            Assert.AreEqual(53, l.Lines.Count);
             foreach (var item in l.Lines)
             {
                 Assert.IsNotNull(item.Content);
             }
-            Assert.AreEqual(4, l.MetaData.Count);
-            Assert.AreEqual("[ti:eternal reality]", l.MetaData[0].ToString());
-            Assert.AreEqual("[ar:fripside]", l.MetaData[1].ToString());
-            Assert.AreEqual("[al:eternal reality]", l.MetaData[2].ToString());
-            Assert.AreEqual("[by:ShenzhiV战斗]", l.MetaData[3].ToString());
+            Assert.AreEqual(5, l.MetaData.Count);
+            Assert.AreEqual("eternal reality", l.MetaData.Title);
+            Assert.AreEqual("fripside", l.MetaData.Artist);
+            Assert.AreEqual("eternal reality", l.MetaData.Album);
+            Assert.AreEqual("ShenzhiV战斗", l.MetaData.Creator);
         }
     }
 }
