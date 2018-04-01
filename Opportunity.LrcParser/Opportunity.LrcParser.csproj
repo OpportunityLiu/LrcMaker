@@ -14,8 +14,4 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Collections" Version="4.0.11" />
-  </ItemGroup>
-
 </Project>
