@@ -14,6 +14,7 @@ using Windows.Media.Audio;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -44,7 +45,7 @@ namespace Opportunity.LrcMaker
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var mediaSource = MediaSource.CreateFromUri(new Uri("ms-appx:///Test/GirlishLover.mp3"));
+            var mediaSource = MediaSource.CreateFromUri(new Uri("ms-appx:///Test/GirlishLover.m4a"));
             await mediaSource.OpenAsync();
             this.mpe.Source = mediaSource;
             this.mpe.MediaPlayer.MediaOpened += this.MediaPlayer_MediaOpened;
@@ -58,7 +59,7 @@ namespace Opportunity.LrcMaker
 
             this.outNode = this.audioGraph.CreateFrameOutputNode();
 
-            this.fileNode = (await this.audioGraph.CreateFileInputNodeAsync(await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Test/GirlishLover.mp3")))).FileInputNode;
+            this.fileNode = (await this.audioGraph.CreateFileInputNodeAsync(await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Test/GirlishLover.m4a")))).FileInputNode;
             this.fileNode.LoopCount = 0;
             this.fileNode.AddOutgoingConnection(this.outNode);
             this.fileNode.FileCompleted += this.FileNode_FileCompleted;
@@ -70,7 +71,7 @@ namespace Opportunity.LrcMaker
         private async void FileNode_FileCompleted(AudioFileInputNode sender, object args)
         {
             this.audioGraph.Stop();
-            await this.img.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            await this.img.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 var img = new WriteableBitmap(this.data.Count, 100);
                 using (var data = img.PixelBuffer.AsStream())
@@ -79,7 +80,7 @@ namespace Opportunity.LrcMaker
                     {
                         for (var i = 0; i < this.data.Count; i++)
                         {
-                            var (a, _, _) = this.data[i];
+                            var (_, _, a) = this.data[i];
                             if (a * 100 < 100 - j)
                             {
                                 data.WriteByte(255);
@@ -95,6 +96,7 @@ namespace Opportunity.LrcMaker
                                 data.WriteByte(255);
                             }
                         }
+                        await Dispatcher.Yield();
                     }
                 }
                 img.Invalidate();
@@ -124,7 +126,7 @@ namespace Opportunity.LrcMaker
             {
                 if (buffer.Length == 0)
                     return;
-                if (this.fileNode.Position == lastPos)
+                if (this.fileNode.Position == this.lastPos)
                     return;
                 this.lastPos = this.fileNode.Position;
                 // Get the buffer from the AudioFrame

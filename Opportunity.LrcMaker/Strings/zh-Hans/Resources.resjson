@@ -1,0 +1,8 @@
+﻿{
+  "Extensions": {
+    "Aurora.Music.Extensions": {
+      "DisplayName": "Lrc Maker",
+      "Description": "来自 ViewLyrics.com 和千千静听的歌词"
+    }
+  }
+}
