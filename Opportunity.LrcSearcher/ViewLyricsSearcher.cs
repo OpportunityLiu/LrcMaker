@@ -39,7 +39,7 @@ namespace Opportunity.LrcSearcher
             var vData = Encoding.UTF8.GetBytes(value);
 
             // Create the variable POG to be used in a dirt code
-            var pog = new byte[vData.Length + magickey.Length]; //TODO Give a better name then POG
+            var pog = new byte[vData.Length + magickey.Length];
 
             // POG = XMLQuery + Magic Key
             Array.Copy(vData, 0, pog, 0, vData.Length);
@@ -49,7 +49,6 @@ namespace Opportunity.LrcSearcher
             var md5 = System.Security.Cryptography.MD5.Create();
             var pog_md5 = md5.ComputeHash(pog);
 
-            //TODO Thing about using encryption or k as 0...
             // Prepare encryption key
             var j = 0;
             for (var i = 0; i < vData.Length; i++)

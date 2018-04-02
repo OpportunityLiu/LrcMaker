@@ -18,8 +18,8 @@ namespace Opportunity.LrcSearcher
         {
             get
             {
-                yield return TTSearcher;
                 yield return ViewLyricsSearcher;
+                yield return TTSearcher;
             }
         }
     }
