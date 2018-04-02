@@ -33,8 +33,8 @@ namespace Opportunity.LrcParser
             var i = start;
             for (; i < end; i++)
             {
-                var v = (int)char.GetNumericValue(value, i);
-                if (v >= 0)
+                var v = value[i] - '0';
+                if (v >= 0 && v <= 9)
                     m = m * 10 + v;
                 else if (value[i] == ':')
                 {
@@ -53,9 +53,9 @@ namespace Opportunity.LrcParser
 
             for (; i < end; i++)
             {
-                var v = (int)char.GetNumericValue(value, i);
-                if (v >= 0)
-                    s = s * 10 + v;
+                var v = value[i] - '0';
+                if (v >= 0 && v <= 9)
+                    m = m * 10 + v;
                 else if (value[i] == '.')
                 {
                     i++;
@@ -74,8 +74,8 @@ namespace Opportunity.LrcParser
             var weight = (int)(TICKS_PER_SECOND / 10);
             for (; i < end; i++)
             {
-                var v = (int)char.GetNumericValue(value, i);
-                if (v >= 0)
+                var v = value[i] - '0';
+                if (v >= 0 && v <= 9)
                 {
                     t += weight * v;
                     weight /= 10;

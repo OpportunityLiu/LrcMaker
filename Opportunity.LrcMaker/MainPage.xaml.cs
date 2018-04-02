@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Opportunity.LrcParser;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -47,7 +48,6 @@ namespace Opportunity.LrcMaker
             await mediaSource.OpenAsync();
             this.mpe.Source = mediaSource;
             this.mpe.MediaPlayer.MediaOpened += this.MediaPlayer_MediaOpened;
-
 
             var settings = new AudioGraphSettings(Windows.Media.Render.AudioRenderCategory.Other)
             {

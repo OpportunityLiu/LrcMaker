@@ -6,10 +6,7 @@ namespace Opportunity.LrcParser.UnitTest
     [TestClass]
     public class Tests
     {
-        [TestMethod]
-        public void TestAll()
-        {
-            var l = Lyrics.Parse(@"
+        public const string TEST_DATA = @"
 asdfhf
 [ ti :  eternal reality  ]aSAS
 ASF[
@@ -19,7 +16,7 @@ fripside
 [al:eternal reality]
 [by:ShenzhiV战斗]
 [offset: +1.1]
-[00:02.16]  [00:02.16]             
+[12234:02.16]  [00:02.16]             
   輝く希望が この街を駆け抜けるから
 〖闪耀的希望 在这座城市之中游走奔驰〗
 [00:08.71]いつだって 信じ合える仲間と 手を繋ぎながら
@@ -77,7 +74,12 @@ fripside
 [03:45.00]★→Lrc By ShenzhiV战斗 ※ 萌愛歌詞組←☆
 [03:50.00]終わり
 [03:52.00]
-");
+";
+
+        [TestMethod]
+        public void TestAll()
+        {
+            var l = Lyrics.Parse(TEST_DATA);
             Assert.AreEqual(53, l.Lines.Count);
             foreach (var item in l.Lines)
             {
@@ -88,6 +90,25 @@ fripside
             Assert.AreEqual("fripside", l.MetaData.Artist);
             Assert.AreEqual("eternal reality", l.MetaData.Album);
             Assert.AreEqual("ShenzhiV战斗", l.MetaData.Creator);
+        }
+
+        [TestMethod]
+        public void Parse10000Times()
+        {
+            for (var i = 0; i < 10000; i++)
+            {
+                Lyrics.Parse(TEST_DATA);
+            }
+        }
+
+        [TestMethod]
+        public void Stringify10000Times()
+        {
+            var l = Lyrics.Parse(TEST_DATA);
+            for (var i = 0; i < 10000; i++)
+            {
+                l.ToString();
+            }
         }
     }
 }

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opportunity.LrcParser", "Opportunity.LrcParser\Opportunity.LrcParser.csproj", "{1F652946-7B1E-4A88-81A7-089F9A0EBD84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opportunity.LrcParser", "Opportunity.LrcParser\Opportunity.LrcParser.csproj", "{1F652946-7B1E-4A88-81A7-089F9A0EBD84}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opportunity.LrcMaker", "Opportunity.LrcMaker\Opportunity.LrcMaker.csproj", "{6BBEB373-DBFD-4D5F-977A-82EB916F151D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opportunity.LrcParser.UnitTest", "Opportunity.LrcParser.UnitTest\Opportunity.LrcParser.UnitTest.csproj", "{14B69B42-056E-419F-AD4C-F3494C7954F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opportunity.LrcParser.UnitTest", "Opportunity.LrcParser.UnitTest\Opportunity.LrcParser.UnitTest.csproj", "{14B69B42-056E-419F-AD4C-F3494C7954F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,5 +79,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7CA723FE-BB7E-40EE-8214-5767D7835C4C}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
