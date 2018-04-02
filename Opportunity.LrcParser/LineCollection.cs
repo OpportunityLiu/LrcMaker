@@ -5,12 +5,22 @@ using System.Text;
 
 namespace Opportunity.LrcParser
 {
+    /// <summary>
+    /// Collection of <see cref="Line"/>.
+    /// </summary>
     public class LineCollection : List<Line>
     {
         internal LineCollection() : base(25) { }
 
+        /// <summary>
+        /// Sort items in the <see cref="LineCollection"/> by <see cref="Line.Timestamp"/>.
+        /// </summary>
         public void SortByTimestamp() => Sort(LineComparer.Instance);
 
+        /// <summary>
+        /// Apply <paramref name="offset"/> to items in the <see cref="LineCollection"/>.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> out of range for some line.</exception>
         public void ApplyOffset(TimeSpan offset)
         {
             if (offset == default)
@@ -44,6 +54,7 @@ namespace Opportunity.LrcParser
             return sb;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder(this.Count * 20);

@@ -4,11 +4,21 @@ using System.Collections.ObjectModel;
 
 namespace Opportunity.LrcParser
 {
+    /// <summary>
+    /// Type of metadata.
+    /// </summary>
     [System.Diagnostics.DebuggerDisplay(@"{Tag}")]
     public abstract class MetaDataType
     {
         private static char[] invalidChars = "]:".ToCharArray();
 
+        /// <summary>
+        /// Create new instance of <see cref="MetaDataType"/>.
+        /// </summary>
+        /// <param name="tag">Tag of metadata.</param>
+        /// <param name="dataType">Data type of metadata.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="tag"/> or <paramref name="dataType"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="tag"/> contains invalid character.</exception>
         protected MetaDataType(string tag, Type dataType)
             : this(tag, dataType, false) { }
 
@@ -31,16 +41,40 @@ namespace Opportunity.LrcParser
             return tag;
         }
 
+        /// <summary>
+        /// Tag of metadata.
+        /// </summary>
         public string Tag { get; }
 
+        /// <inheritdoc/>
         public override string ToString() => Tag;
 
+        /// <summary>
+        /// Parse metadata content string.
+        /// </summary>
+        /// <param name="mataDataContent">Metadata content string.</param>
+        /// <returns>Parsed metadata content, should be of <see cref="DataType"/>.</returns>
         protected internal abstract object Parse(string mataDataContent);
 
+        /// <summary>
+        /// Convert metadata content to string.
+        /// </summary>
+        /// <param name="mataDataContent">Metadata content of <see cref="DataType"/>.</param>
+        /// <returns>String representation of <paramref name="mataDataContent"/>.</returns>
         protected internal virtual string Stringify(object mataDataContent) => (mataDataContent ?? "").ToString().Trim();
 
+        /// <summary>
+        /// Data type of metadata.
+        /// </summary>
         public Type DataType { get; }
 
+        /// <summary>
+        /// Create new instance of <see cref="MetaDataType"/>, if <paramref name="tag"/> is known, value from <see cref="PreDefined"/> will be returned.
+        /// </summary>
+        /// <param name="tag">Tag of metadata.</param>
+        /// <returns>New instance of <see cref="MetaDataType"/>, or instance from <see cref="PreDefined"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="tag"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="tag"/> contains invalid character.</exception>
         public static MetaDataType Create(string tag)
         {
             tag = checkTag(tag);
@@ -49,9 +83,32 @@ namespace Opportunity.LrcParser
             return new NoValidateMetaDataType(tag);
         }
 
+        /// <summary>
+        /// Create new instance of <see cref="MetaDataType"/>, if <paramref name="tag"/> is known, value from <see cref="PreDefined"/> will be returned.
+        /// </summary>
+        /// <param name="tag">Tag of metadata.</param>
+        /// <param name="parser">Parser for <see cref="Parse(string)"/> method.</param>
+        /// <returns>New instance of <see cref="MetaDataType"/>, or instance from <see cref="PreDefined"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="tag"/> or <paramref name="parser"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="tag"/> contains invalid character.</exception>
+        /// <remarks>
+        /// If instance from <see cref="PreDefined"/> is returned, <paramref name="parser"/> will be ignored.
+        /// </remarks>
         public static MetaDataType Create<T>(string tag, Func<string, T> parser)
             => Create(tag, parser, null);
 
+        /// <summary>
+        /// Create new instance of <see cref="MetaDataType"/>, if <paramref name="tag"/> is known, value from <see cref="PreDefined"/> will be returned.
+        /// </summary>
+        /// <param name="tag">Tag of metadata.</param>
+        /// <param name="parser">Parser for <see cref="Parse(string)"/> method.</param>
+        /// <param name="stringifier">Stringifier for <see cref="Stringify(object)"/> method.</param>
+        /// <returns>New instance of <see cref="MetaDataType"/>, or instance from <see cref="PreDefined"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="tag"/> or <paramref name="parser"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="tag"/> contains invalid character.</exception>
+        /// <remarks>
+        /// If instance from <see cref="PreDefined"/> is returned, <paramref name="parser"/> and <paramref name="stringifier"/> will be ignored.
+        /// </remarks>
         public static MetaDataType Create<T>(string tag, Func<string, T> parser, Func<T, string> stringifier)
         {
             if (parser == null)
@@ -110,36 +167,36 @@ namespace Opportunity.LrcParser
             });
 
         /// <summary>
-        /// Lyrics artist.
-        ///</summary>
+        /// Lyrics artist, "ar" field of ID Tags.
+        /// </summary>
         public static MetaDataType Artist => PreDefined["ar"];
         /// <summary>
-        /// Album where the song is from.
-        ///</summary>
+        /// Album where the song is from, "al" field of ID Tags.
+        /// </summary>
         public static MetaDataType Album => PreDefined["al"];
         /// <summary>
-        /// Lyrics(song) title.
-        ///</summary>
+        /// Lyrics(song) title, "ti" field of ID Tags.
+        /// </summary>
         public static MetaDataType Title => PreDefined["ti"];
         /// <summary>
-        /// Creator of the songtext.
-        ///</summary>
+        /// Creator of the songtext, "au" field of ID Tags.
+        /// </summary>
         public static MetaDataType Author => PreDefined["au"];
         /// <summary>
-        /// Creator of the LRC file.
-        ///</summary>
+        /// Creator of the LRC file, "by" field of ID Tags.
+        /// </summary>
         public static MetaDataType Creator => PreDefined["by"];
         /// <summary>
-        /// Overall timestamp adjustment.
-        ///</summary>
+        /// Overall timestamp adjustment, "offset" field of ID Tags.
+        /// </summary>
         public static MetaDataType Offset => PreDefined["offset"];
         /// <summary>
-        /// The player or editor that created the LRC file.
-        ///</summary>
+        /// The player or editor that created the LRC file, "re" field of ID Tags.
+        /// </summary>
         public static MetaDataType Editor => PreDefined["re"];
         /// <summary>
-        /// Version of program.
-        ///</summary>
+        /// Version of program, "ve" field of ID Tags.
+        /// </summary>
         public static MetaDataType Version => PreDefined["ve"];
         #endregion Pre-defined
     }

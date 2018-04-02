@@ -4,11 +4,22 @@ using System.Text;
 
 namespace Opportunity.LrcParser
 {
+    /// <summary>
+    /// Represents single line of lyrics.
+    /// </summary>
     [System.Diagnostics.DebuggerDisplay(@"{ToString(),nq}")]
     public class Line
     {
+        /// <summary>
+        /// Create new instance of <see cref="Line"/>.
+        /// </summary>
         public Line() { }
 
+        /// <summary>
+        /// Create new instance of <see cref="Line"/>.
+        /// </summary>
+        /// <param name="timestamp">Timestamp of this line.</param>
+        /// <param name="content">Lyrics of this line.</param>
         public Line(DateTime timestamp, string content)
         {
             Timestamp = timestamp;
@@ -16,9 +27,13 @@ namespace Opportunity.LrcParser
         }
 
         private static DateTime ONE_HOUR = new DateTime(1, 1, 1, 1, 0, 0);
+        private static DateTime ONE_YEAR = new DateTime(2, 1, 1, 0, 0, 0);
 
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         internal DateTime InternalTimestamp;
+        /// <summary>
+        /// Timestamp of this line of lyrics.
+        /// </summary>
         public DateTime Timestamp
         {
             get => this.InternalTimestamp;
@@ -26,28 +41,28 @@ namespace Opportunity.LrcParser
             {
                 if (value.Kind != DateTimeKind.Unspecified)
                     throw new ArgumentException("Kind of value should be DateTimeKind.Unspecified");
-                if (value.Year > 1000) //Auto correct.
-                    value = new DateTime(1, value.Month, value.Day, value.Hour, value.Minute, value.Second, value.Millisecond);
+                if (value >= ONE_YEAR) //Auto correct.
+                    value = new DateTime(1, 1, 1, value.Hour, value.Minute, value.Second, value.Millisecond);
                 this.InternalTimestamp = value;
             }
         }
 
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
         internal string InternalContent = "";
+        /// <summary>
+        /// Lyrics of this line.
+        /// </summary>
         public string Content { get => this.InternalContent; set => this.InternalContent = (value ?? "").Trim(); }
 
         internal StringBuilder ToString(StringBuilder sb)
         {
-            var tts = this.InternalTimestamp;
-            var ts = tts >= ONE_HOUR
-                ? tts.ToString("HH:mm:ss.ff")
-                : tts.ToString("mm:ss.ff");
             return sb.Append('[')
-                .Append(ts)
+                .Append(this.InternalTimestamp.ToLrcString())
                 .Append(']')
                 .AppendLine(this.InternalContent);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder(this.InternalContent.Length + 10);

@@ -119,22 +119,6 @@ namespace Opportunity.LrcParser
             return end;
         }
 
-        private static string[] timestampFormats = new[]
-        {
-            "m:s.f",
-            "m:s.ff",
-            "m:s.fff",
-            "m:s.ffff",
-            "m:s.fffff",
-            "m:s.ffffff",
-            "h:m:s.f",
-            "h:m:s.ff",
-            "h:m:s.fff",
-            "h:m:s.ffff",
-            "h:m:s.fffff",
-            "h:m:s.ffffff",
-        };
-
         private void analyzeLine(int next)
         {
             var current = this.currentPosition;
@@ -162,8 +146,7 @@ namespace Opportunity.LrcParser
                 }
                 else
                 {
-                    var timestamp = this.data.Substring(tagStart, tagEnd - tagStart);
-                    if (DateTime.TryParseExact(timestamp, timestampFormats, null, System.Globalization.DateTimeStyles.NoCurrentDateDefault | System.Globalization.DateTimeStyles.AllowWhiteSpaces, out var time))
+                    if (DateTimeExtension.TryParseLrcString(this.data, tagStart, tagEnd, out var time))
                         this.Lines.Add(new Line { InternalTimestamp = time });
                 }
             }

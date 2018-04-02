@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace Opportunity.LrcParser
 {
+    /// <summary>
+    /// Dictionary of lrc metadata.
+    /// </summary>
     public class MetaDataDictionary : Dictionary<MetaDataType, object>
     {
         private object tryGet(MetaDataType key)
@@ -31,8 +34,8 @@ namespace Opportunity.LrcParser
         }
 
         /// <summary>
-        /// Lyrics artist.
-        ///</summary>
+        /// Lyrics artist, "ar" field of ID Tags.
+        /// </summary>
         public string Artist
         {
             get => tryGet(MetaDataType.Artist) is string s ? s : "";
@@ -40,8 +43,8 @@ namespace Opportunity.LrcParser
         }
 
         /// <summary>
-        /// Album where the song is from.
-        ///</summary>
+        /// Album where the song is from, "al" field of ID Tags.
+        /// </summary>
         public string Album
         {
             get => tryGet(MetaDataType.Album) is string s ? s : "";
@@ -49,8 +52,8 @@ namespace Opportunity.LrcParser
         }
 
         /// <summary>
-        /// Lyrics(song) title.
-        ///</summary>
+        /// Lyrics(song) title, "ti" field of ID Tags.
+        /// </summary>
         public string Title
         {
             get => tryGet(MetaDataType.Title) is string s ? s : "";
@@ -58,8 +61,8 @@ namespace Opportunity.LrcParser
         }
 
         /// <summary>
-        /// Creator of the songtext.
-        ///</summary>
+        /// Creator of the songtext, "au" field of ID Tags.
+        /// </summary>
         public string Author
         {
             get => tryGet(MetaDataType.Author) is string s ? s : "";
@@ -67,8 +70,8 @@ namespace Opportunity.LrcParser
         }
 
         /// <summary>
-        /// Creator of the LRC file.
-        ///</summary>
+        /// Creator of the LRC file, "by" field of ID Tags.
+        /// </summary>
         public string Creator
         {
             get => tryGet(MetaDataType.Creator) is string s ? s : "";
@@ -76,8 +79,8 @@ namespace Opportunity.LrcParser
         }
 
         /// <summary>
-        /// Overall timestamp adjustment.
-        ///</summary>
+        /// Overall timestamp adjustment, "offset" field of ID Tags.
+        /// </summary>
         public TimeSpan Offset
         {
             get => tryGet(MetaDataType.Offset) is TimeSpan s ? s : default;
@@ -91,8 +94,8 @@ namespace Opportunity.LrcParser
         }
 
         /// <summary>
-        /// The player or editor that created the LRC file.
-        ///</summary>
+        /// The player or editor that created the LRC file, "re" field of ID Tags.
+        /// </summary>
         public string Editor
         {
             get => tryGet(MetaDataType.Editor) is string s ? s : "";
@@ -100,8 +103,8 @@ namespace Opportunity.LrcParser
         }
 
         /// <summary>
-        /// Version of program.
-        ///</summary>
+        /// Version of program, "ve" field of ID Tags.
+        /// </summary>
         public string Version
         {
             get => tryGet(MetaDataType.Version) is string s ? s : "";
@@ -125,6 +128,7 @@ namespace Opportunity.LrcParser
             return sb;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder(this.Count * 10);
