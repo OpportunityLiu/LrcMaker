@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Opportunity.Helpers.Universal.AsyncHelpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -20,18 +21,18 @@ namespace Opportunity.LrcSearcher
 
         private static readonly byte[] magickey = Encoding.UTF8.GetBytes("Mlv1clt4.0");
 
-        public IAsyncOperation<IEnumerable<LrcInfo>> FetchLrcListAsync(string artist, string title)
+        public IAsyncOperation<IEnumerable<ILrcInfo>> FetchLrcListAsync(string artist, string title)
         {
             return searchQuery(string.Format(searchQueryBase, artist, title)).AsAsyncOperation();
         }
 
-        private static async Task<IEnumerable<LrcInfo>> searchQuery(string searchQuery)
+        private static async Task<IEnumerable<ILrcInfo>> searchQuery(string searchQuery)
         {
             var r = await Helper.HttpClient.PostAsync(new Uri(url), new HttpBufferContent(assembleQuery(searchQuery).AsBuffer()));
 
             var data = (await r.Content.ReadAsBufferAsync()).ToArray();
             var xml = decryptResultXML(data);
-            return await parseResultXMLAsync(xml);
+            return parseResultXML(xml);
         }
 
         private static byte[] assembleQuery(string value)
@@ -97,14 +98,14 @@ namespace Opportunity.LrcSearcher
             return Encoding.UTF8.GetString(neomagic.GetBuffer());
         }
 
-        private static async Task<IEnumerable<LrcInfo>> parseResultXMLAsync(string resultXML)
+        private static IEnumerable<LrcInfo> parseResultXML(string resultXML)
         {
             var doc = new XmlDocument();
             doc.LoadXml(resultXML);
 
             var server = new Uri(doc.SelectSingleNode("/return/@server_url").Value);
             var nodelist = doc.SelectNodes("/return/fileinfo");
-            var lrclist = new LrcInfo[nodelist.Count];
+            var lrclist = new VLLrcInfo[nodelist.Count];
             for (var i = 0; i < lrclist.Length; i++)
             {
                 var element = (XmlElement)nodelist[i];
@@ -112,9 +113,22 @@ namespace Opportunity.LrcSearcher
                 var artist = element.GetAttribute("artist");
                 var title = element.GetAttribute("title");
                 var uri = element.GetAttribute("link");
-                lrclist[i] = new LrcInfo(title, artist, album, await HttpClient.GetStringAsync(new Uri(server, uri)));
+                lrclist[i] = new VLLrcInfo(title, artist, album, new Uri(server, uri));
             }
             return lrclist;
+        }
+
+        private sealed class VLLrcInfo : LrcInfo
+        {
+            private readonly Uri lrcUri;
+
+            internal VLLrcInfo(string title, string artist, string album, Uri lrcUri) : base(title, artist, album)
+            {
+                this.lrcUri = lrcUri;
+            }
+
+            public override IAsyncOperation<string> FetchLryics()
+                => HttpClient.GetStringAsync(this.lrcUri).AsAsyncOperation();
         }
 
         internal static readonly HttpClient HttpClient = getClient();

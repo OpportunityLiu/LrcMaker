@@ -1,20 +1,21 @@
 ﻿using System.Text;
 using System;
+using Windows.Foundation;
 
 namespace Opportunity.LrcSearcher
 {
-    public sealed class LrcInfo
+    internal abstract class LrcInfo : ILrcInfo
     {
         public string Artist { get; }
         public string Title { get; }
         public string Album { get; }
-        public string Lrycis { get; }
 
-        internal LrcInfo(string title, string artist, string album, string lrycis)
+        public abstract IAsyncOperation<string> FetchLryics();
+
+        internal LrcInfo(string title, string artist, string album)
         {
             this.Title = title;
             this.Artist = artist;
-            this.Lrycis = lrycis;
             this.Album = album;
         }
     }

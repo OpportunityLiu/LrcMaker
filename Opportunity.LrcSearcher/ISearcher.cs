@@ -6,7 +6,7 @@ namespace Opportunity.LrcSearcher
 {
     public interface ISearcher
     {
-        IAsyncOperation<IEnumerable<LrcInfo>> FetchLrcListAsync(string artist, string title);
+        IAsyncOperation<IEnumerable<ILrcInfo>> FetchLrcListAsync(string artist, string title);
     }
 
     public static class Searchers

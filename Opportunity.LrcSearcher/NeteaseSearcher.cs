@@ -29,9 +29,9 @@ namespace Opportunity.LrcSearcher
 
         private static readonly DataContractJsonSerializer searchJsonSerializer = new DataContractJsonSerializer(typeof(SearchResult));
 
-        public IAsyncOperation<IEnumerable<LrcInfo>> FetchLrcListAsync(string artist, string title)
+        public IAsyncOperation<IEnumerable<ILrcInfo>> FetchLrcListAsync(string artist, string title)
         {
-            return AsyncInfo.Run<IEnumerable<LrcInfo>>(async token =>
+            return AsyncInfo.Run<IEnumerable<ILrcInfo>>(async token =>
             {
                 var s = new Dictionary<string, string>
                 {
@@ -46,65 +46,78 @@ namespace Opportunity.LrcSearcher
                 {
                     var data = (SearchResult)searchJsonSerializer.ReadObject(stream);
                     if (data.code != 200)
-                        return Array.Empty<LrcInfo>();
-                    var lrc = new List<LrcInfo>(data.result.songs.Length);
-                    foreach (var item in data.result.songs)
+                        return Array.Empty<ILrcInfo>();
+                    var lrc = new NeteaseLrcInfo[data.result.songs.Length];
+                    for (var i = 0; i < lrc.Length; i++)
                     {
-                        var lrcData = await getLrc(item);
-                        if (lrcData is null)
-                            continue;
-                        lrc.Add(lrcData);
+                        lrc[i] = new NeteaseLrcInfo(data.result.songs[i]);
                     }
-                    return lrc.ToArray();
+                    return lrc;
                 }
             });
         }
 
-
-        private static readonly DataContractJsonSerializer lrcJsonSerializer = new DataContractJsonSerializer(typeof(LrcResult));
-
-        private static async Task<LrcInfo> getLrc(Song song)
+        private sealed class NeteaseLrcInfo : LrcInfo
         {
-            var uri = new Uri($"http://music.163.com/api/song/lyric?os=pc&id={song.id.ToString()}&lv=-1");
-            var buf = await httpClient.GetBufferAsync(uri);
-            using (var stream = buf.AsStream())
+            private static readonly DataContractJsonSerializer lrcJsonSerializer = new DataContractJsonSerializer(typeof(LrcResult));
+
+            [DataContract]
+            public class LrcResult
             {
-                var data = (LrcResult)lrcJsonSerializer.ReadObject(stream);
-                if (data.code != 200 || data?.lrc?.lyric is null)
-                    return null;
-                var title = song.name ?? "";
-                var artist = song.artists is null ? "" : string.Join(", ", song.artists.Select(a => a?.name ?? ""));
-                var album = song?.album?.name ?? "";
-                var lyric = LrcParser.Lyrics.Parse(data.lrc.lyric);
-                lyric.Lines.SortByTimestamp();
-                if (string.IsNullOrEmpty(lyric.MetaData.Title))
-                    lyric.MetaData.Title = title;
-                if (string.IsNullOrEmpty(lyric.MetaData.Artist))
-                    lyric.MetaData.Artist = artist;
-                if (string.IsNullOrEmpty(lyric.MetaData.Album))
-                    lyric.MetaData.Album = album;
-                if (lyric.Lines.Count != 0 && lyric.Lines[0].Timestamp != default)
-                    lyric.Lines.Add(new LrcParser.Line());
-                return new LrcInfo(title, artist, album, lyric.ToString());
+                [DataMember]
+                public Lrc lrc { get; set; }
+                [DataMember]
+                public int code { get; set; }
             }
-        }
 
-        [DataContract]
-        public class LrcResult
-        {
-            [DataMember]
-            public Lrc lrc { get; set; }
-            [DataMember]
-            public int code { get; set; }
-        }
+            [DataContract]
+            public class Lrc
+            {
+                [DataMember]
+                public int version { get; set; }
+                [DataMember]
+                public string lyric { get; set; }
+            }
 
-        [DataContract]
-        public class Lrc
-        {
-            [DataMember]
-            public int version { get; set; }
-            [DataMember]
-            public string lyric { get; set; }
+            internal NeteaseLrcInfo(Song song)
+                : base(song.name ?? "",
+                      song.artists is null ? "" : string.Join(", ", song.artists.Select(a => a?.name ?? "")),
+                      song?.album?.name ?? "")
+            {
+                this.id = song.id;
+            }
+
+            private readonly int id;
+
+            public override IAsyncOperation<string> FetchLryics()
+            {
+                return AsyncInfo.Run(async token =>
+                {
+                    var uri = new Uri($"http://music.163.com/api/song/lyric?os=pc&id={this.id.ToString()}&lv=-1");
+                    var buf = await httpClient.GetBufferAsync(uri);
+                    using (var stream = buf.AsStream())
+                    {
+                        var data = (LrcResult)lrcJsonSerializer.ReadObject(stream);
+                        if (data.code != 200 || data?.lrc?.lyric is null)
+                            return "";
+                        var lyric = LrcParser.Lyrics.Parse(data.lrc.lyric);
+                        if (lyric.Lines.Count == 0)
+                        {
+                            return null;
+                        }
+                        lyric.Lines.SortByTimestamp();
+                        if (string.IsNullOrEmpty(lyric.MetaData.Title))
+                            lyric.MetaData.Title = Title;
+                        if (string.IsNullOrEmpty(lyric.MetaData.Artist))
+                            lyric.MetaData.Artist = Artist;
+                        if (string.IsNullOrEmpty(lyric.MetaData.Album))
+                            lyric.MetaData.Album = Album;
+                        if (lyric.Lines.Count != 0 && lyric.Lines[0].Timestamp != default)
+                            lyric.Lines.Add(new LrcParser.Line());
+                        return lyric.ToString();
+                    }
+                });
+            }
         }
 
 

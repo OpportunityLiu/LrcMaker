@@ -117,6 +117,7 @@
   <ItemGroup>
     <Compile Include="AuroraExtensionBackgroundTask.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="ILrcInfo.cs" />
     <Compile Include="LrcInfo.cs" />
     <Compile Include="NeteaseSearcher.cs" />
     <Compile Include="TTSearcher.cs" />
@@ -126,6 +127,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.0.8</Version>
+    </PackageReference>
+    <PackageReference Include="Opportunity.Helpers.Universal">
+      <Version>1.3.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
