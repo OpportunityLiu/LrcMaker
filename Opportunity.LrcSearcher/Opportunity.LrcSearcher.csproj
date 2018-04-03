@@ -118,6 +118,7 @@
     <Compile Include="AuroraExtensionBackgroundTask.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="LrcInfo.cs" />
+    <Compile Include="NeteaseSearcher.cs" />
     <Compile Include="TTSearcher.cs" />
     <Compile Include="ViewLyricsSearcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -63,7 +63,7 @@ namespace Opportunity.LrcSearcher
                     {
                         continue;
                     }
-                    var returnData = new ValueSet { ["status"] = 1, ["result"] = await Helper.HttpClient.GetStringAsync(lrc1.Uri) };
+                    var returnData = new ValueSet { ["status"] = 1, ["result"] = lrc1.Lrycis };
                     await args.Request.SendResponseAsync(returnData);
                 }
 

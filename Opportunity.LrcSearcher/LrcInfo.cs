@@ -8,13 +8,13 @@ namespace Opportunity.LrcSearcher
         public string Artist { get; }
         public string Title { get; }
         public string Album { get; }
-        public Uri Uri { get; }
+        public string Lrycis { get; }
 
-        internal LrcInfo(string title, string artist, string album, Uri uri)
+        internal LrcInfo(string title, string artist, string album, string lrycis)
         {
             this.Title = title;
             this.Artist = artist;
-            this.Uri = uri;
+            this.Lrycis = lrycis;
             this.Album = album;
         }
     }

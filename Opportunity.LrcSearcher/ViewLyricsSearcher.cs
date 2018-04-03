@@ -31,7 +31,7 @@ namespace Opportunity.LrcSearcher
 
             var data = (await r.Content.ReadAsBufferAsync()).ToArray();
             var xml = decryptResultXML(data);
-            return parseResultXML(xml);
+            return await parseResultXMLAsync(xml);
         }
 
         private static byte[] assembleQuery(string value)
@@ -97,7 +97,7 @@ namespace Opportunity.LrcSearcher
             return Encoding.UTF8.GetString(neomagic.GetBuffer());
         }
 
-        private static IEnumerable<LrcInfo> parseResultXML(string resultXML)
+        private static async Task<IEnumerable<LrcInfo>> parseResultXMLAsync(string resultXML)
         {
             var doc = new XmlDocument();
             doc.LoadXml(resultXML);
@@ -112,7 +112,7 @@ namespace Opportunity.LrcSearcher
                 var artist = element.GetAttribute("artist");
                 var title = element.GetAttribute("title");
                 var uri = element.GetAttribute("link");
-                lrclist[i] = new LrcInfo(title, artist, album, new Uri(server, uri));
+                lrclist[i] = new LrcInfo(title, artist, album, await HttpClient.GetStringAsync(new Uri(server, uri)));
             }
             return lrclist;
         }

@@ -44,6 +44,7 @@ namespace Opportunity.LrcMaker
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            var rrr = await LrcSearcher.Searchers.NeteaseSearcher.FetchLrcListAsync("", "TORCH");
             base.OnNavigatedTo(e);
             var mediaSource = MediaSource.CreateFromUri(new Uri("ms-appx:///Test/GirlishLover.m4a"));
             await mediaSource.OpenAsync();

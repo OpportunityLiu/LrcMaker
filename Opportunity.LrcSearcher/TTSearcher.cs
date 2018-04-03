@@ -41,7 +41,7 @@ namespace Opportunity.LrcSearcher
                     var titleItem = element.GetAttribute("title");
                     var idItem = element.GetAttribute("id");
                     var uri = new Uri(string.Format(DownloadPath, idItem, getQianQianCode(int.Parse(idItem), titleItem, artistItem)));
-                    lrclist[i] = new LrcInfo(titleItem, artistItem, "", uri);
+                    lrclist[i] = new LrcInfo(titleItem, artistItem, "", await httpClient.GetStringAsync(uri));
                 }
                 return (IEnumerable<LrcInfo>)lrclist;
             });
@@ -50,37 +50,6 @@ namespace Opportunity.LrcSearcher
         private static readonly string SearchPath = "http://lrcct2.ttplayer.com/dll/lyricsvr.dll?sh?Artist={0}&Title={1}&Flags=0";
 
         private static HttpClient httpClient = new HttpClient();
-
-        //根据artist和title获取歌词信息
-        public static LrcInfo[] GetLrcList(string artist, string title, string filepath)
-        {
-            string artistHex = asHexString(artist, Encoding.Unicode);
-            string titleHex = asHexString(title, Encoding.Unicode);
-
-            string resultUrl = string.Format(SearchPath, artistHex, titleHex);
-
-            var doc = new XmlDocument();
-            try
-            {
-                doc.Load(resultUrl);
-
-                XmlNodeList nodelist = doc.SelectNodes("/result/lrc");
-                List<LrcInfo> lrclist = new List<LrcInfo>();
-                foreach (XmlNode node in nodelist)
-                {
-                    var element = (XmlElement)node;
-                    var artistItem = element.GetAttribute("artist");
-                    var titleItem = element.GetAttribute("title");
-                    var idItem = element.GetAttribute("id");
-                    lrclist.Add(new LrcInfo(titleItem, artistItem, "", new Uri(string.Format(DownloadPath, idItem, getQianQianCode(int.Parse(idItem), titleItem, artistItem)))));
-                }
-                return lrclist.ToArray();
-            }
-            catch (XmlException)
-            {
-                return null;
-            }
-        }
 
         //把字符串转换为十六进制
         private static string asHexString(string str, Encoding encoding)
