@@ -131,6 +131,12 @@
   <ItemGroup>
     <Compile Include="ISearcher.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Opportunity.LrcParser\Opportunity.LrcParser.csproj">
+      <Project>{1f652946-7b1e-4a88-81a7-089f9a0ebd84}</Project>
+      <Name>Opportunity.LrcParser</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

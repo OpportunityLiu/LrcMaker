@@ -55,7 +55,7 @@ namespace Opportunity.LrcParser
             {
                 var v = value[i] - '0';
                 if (v >= 0 && v <= 9)
-                    m = m * 10 + v;
+                    s = s * 10 + v;
                 else if (value[i] == '.')
                 {
                     i++;
