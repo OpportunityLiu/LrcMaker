@@ -20,19 +20,6 @@
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
-      <Extensions>
-        <uap:Extension Category="windows.appService" EntryPoint="Opportunity.LrcSearcher.AuroraExtensionBackgroundTask">
-          <uap:AppService Name="Aurora.Music.Extensions" />
-        </uap:Extension>
-        <uap3:Extension Category="windows.appExtension">
-          <uap3:AppExtension Name="Aurora.Music.Extensions" Id="Opportunity.LyricSrv" PublicFolder="Public\Aurora.Music.Extensions" DisplayName="ms-resource:Extensions/Aurora.Music.Extensions/DisplayName" Description="ms-resource:Extensions/Aurora.Music.Extensions/Description">
-            <uap3:Properties>
-              <Service>Aurora.Music.Extensions</Service>
-              <Category>Lyric</Category>
-            </uap3:Properties>
-          </uap3:AppExtension>
-        </uap3:Extension>
-      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

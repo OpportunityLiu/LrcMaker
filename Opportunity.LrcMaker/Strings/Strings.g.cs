@@ -53,49 +53,47 @@ namespace Opportunity.LrcMaker
     {
 
         [global::System.Diagnostics.DebuggerBrowsableAttribute(global::System.Diagnostics.DebuggerBrowsableState.Never)]
-        private static global::Opportunity.LrcMaker.ResourceInfo.IResources Resources___9__7Mfe;
-        internal static global::Opportunity.LrcMaker.ResourceInfo.IResources Resources
-            => global::System.Threading.LazyInitializer.EnsureInitialized(ref Resources___9__7Mfe, () => new global::Opportunity.LrcMaker.Strings.Resources__V2WwdfRq());
+        private static global::Opportunity.LrcMaker.ResourceInfo.IResources Resources__SkPf3Eq1;
+        internal static global::Opportunity.LrcMaker.ResourceInfo.IResources Resources 
+            => global::System.Threading.LazyInitializer.EnsureInitialized(ref Resources__SkPf3Eq1, () => new global::Opportunity.LrcMaker.Strings.Resources__s__ew_aL());
 
         [global::System.Diagnostics.DebuggerTypeProxyAttribute(typeof(global::Opportunity.ResourceGenerator.DebuggerDisplay))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Opportunity.ResourceGenerator", "1.3.6.0")]
-        private sealed class Resources__V2WwdfRq : global::Opportunity.ResourceGenerator.ResourceProviderBase, global::Opportunity.LrcMaker.ResourceInfo.IResources
+        private sealed class Resources__s__ew_aL : global::Opportunity.ResourceGenerator.ResourceProviderBase, global::Opportunity.LrcMaker.ResourceInfo.IResources
         {
-            public Resources__V2WwdfRq() : base("ms-resource:///Resources/") { }
+            public Resources__s__ew_aL() : base("ms-resource:///Resources/") { }
 
 
             [global::System.Diagnostics.DebuggerBrowsableAttribute(global::System.Diagnostics.DebuggerBrowsableState.Never)]
-            private global::Opportunity.LrcMaker.ResourceInfo.Resources.IExtensions Extensions__GnoPbS6_;
+            private global::Opportunity.LrcMaker.ResourceInfo.Resources.IExtensions Extensions___rxTWQGf;
             [global::Opportunity.ResourceGenerator.ResourcePathAttribute("ms-resource:///Resources/Extensions")]
-            global::Opportunity.LrcMaker.ResourceInfo.Resources.IExtensions global::Opportunity.LrcMaker.ResourceInfo.IResources.Extensions
-                => global::System.Threading.LazyInitializer.EnsureInitialized(ref this.Extensions__GnoPbS6_, () => new global::Opportunity.LrcMaker.Strings.Resources__V2WwdfRq.Extensions__ykMuvhFe());
+            global::Opportunity.LrcMaker.ResourceInfo.Resources.IExtensions global::Opportunity.LrcMaker.ResourceInfo.IResources.Extensions 
+                => global::System.Threading.LazyInitializer.EnsureInitialized(ref this.Extensions___rxTWQGf, () => new global::Opportunity.LrcMaker.Strings.Resources__s__ew_aL.Extensions__rLEBRzj8());
 
             [global::System.Diagnostics.DebuggerTypeProxyAttribute(typeof(global::Opportunity.ResourceGenerator.DebuggerDisplay))]
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Opportunity.ResourceGenerator", "1.3.6.0")]
-            private sealed class Extensions__ykMuvhFe : global::Opportunity.ResourceGenerator.ResourceProviderBase, global::Opportunity.LrcMaker.ResourceInfo.Resources.IExtensions
+            private sealed class Extensions__rLEBRzj8 : global::Opportunity.ResourceGenerator.ResourceProviderBase, global::Opportunity.LrcMaker.ResourceInfo.Resources.IExtensions
             {
-                public Extensions__ykMuvhFe() : base("ms-resource:///Resources/Extensions/") { }
+                public Extensions__rLEBRzj8() : base("ms-resource:///Resources/Extensions/") { }
 
                 [global::System.Diagnostics.DebuggerBrowsableAttribute(global::System.Diagnostics.DebuggerBrowsableState.Never)]
-                private global::Opportunity.LrcMaker.ResourceInfo.Resources.Extensions.IAurora_Music_Extensions Aurora_Music_Extensions__zdNjt2yl;
+                private global::Opportunity.LrcMaker.ResourceInfo.Resources.Extensions.IAurora_Music_Extensions Aurora_Music_Extensions__qChm_AK0;
                 [global::Opportunity.ResourceGenerator.ResourcePathAttribute("ms-resource:///Resources/Extensions/Aurora.Music.Extensions")]
-                global::Opportunity.LrcMaker.ResourceInfo.Resources.Extensions.IAurora_Music_Extensions global::Opportunity.LrcMaker.ResourceInfo.Resources.IExtensions.Aurora_Music_Extensions
-                    => global::System.Threading.LazyInitializer.EnsureInitialized(ref this.Aurora_Music_Extensions__zdNjt2yl, () => new global::Opportunity.LrcMaker.Strings.Resources__V2WwdfRq.Extensions__ykMuvhFe.Aurora_Music_Extensions__J9XDR5mG());
+                global::Opportunity.LrcMaker.ResourceInfo.Resources.Extensions.IAurora_Music_Extensions global::Opportunity.LrcMaker.ResourceInfo.Resources.IExtensions.Aurora_Music_Extensions 
+                    => global::System.Threading.LazyInitializer.EnsureInitialized(ref this.Aurora_Music_Extensions__qChm_AK0, () => new global::Opportunity.LrcMaker.Strings.Resources__s__ew_aL.Extensions__rLEBRzj8.Aurora_Music_Extensions__WvTlsb1t());
 
                 [global::System.Diagnostics.DebuggerTypeProxyAttribute(typeof(global::Opportunity.ResourceGenerator.DebuggerDisplay))]
                 [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
                 [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Opportunity.ResourceGenerator", "1.3.6.0")]
-                private sealed class Aurora_Music_Extensions__J9XDR5mG : global::Opportunity.ResourceGenerator.ResourceProviderBase, global::Opportunity.LrcMaker.ResourceInfo.Resources.Extensions.IAurora_Music_Extensions
+                private sealed class Aurora_Music_Extensions__WvTlsb1t : global::Opportunity.ResourceGenerator.ResourceProviderBase, global::Opportunity.LrcMaker.ResourceInfo.Resources.Extensions.IAurora_Music_Extensions
                 {
-                    public Aurora_Music_Extensions__J9XDR5mG() : base("ms-resource:///Resources/Extensions/Aurora.Music.Extensions/") { }
+                    public Aurora_Music_Extensions__WvTlsb1t() : base("ms-resource:///Resources/Extensions/Aurora.Music.Extensions/") { }
 
-                    [global::System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
                     [global::Opportunity.ResourceGenerator.ResourcePathAttribute("ms-resource:///Resources/Extensions/Aurora.Music.Extensions/DisplayName")]
                     string global::Opportunity.LrcMaker.ResourceInfo.Resources.Extensions.IAurora_Music_Extensions.DisplayName
                         => global::Opportunity.Helpers.Universal.LocalizedStrings.GetValue("ms-resource:///Resources/Extensions/Aurora.Music.Extensions/DisplayName");
-                    [global::System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
                     [global::Opportunity.ResourceGenerator.ResourcePathAttribute("ms-resource:///Resources/Extensions/Aurora.Music.Extensions/Description")]
                     string global::Opportunity.LrcMaker.ResourceInfo.Resources.Extensions.IAurora_Music_Extensions.Description
                         => global::Opportunity.Helpers.Universal.LocalizedStrings.GetValue("ms-resource:///Resources/Extensions/Aurora.Music.Extensions/Description");
